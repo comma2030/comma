@@ -1,6 +1,3 @@
-// /app/components/Footer.tsx
-import { Instagram, Youtube, ArrowRight } from 'lucide-react';
-
 export const Footer = () => {
     return (
         <>
