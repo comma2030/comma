@@ -1,103 +1,207 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+import Image from 'next/image';
+import { motion, useInView } from 'framer-motion';
+import React, { useRef } from 'react';
+import { ArrowRight, Youtube, Instagram } from 'lucide-react';
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+// --- 레퍼런스 스타일의 섹션 래퍼 ---
+const TitledSection = ({ num, title, children }: { num: string; title: string; children: React.ReactNode }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.2 });
+
+    return (
+        <motion.section
+            ref={ref}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 40 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="container mx-auto px-6 py-16 md:py-24"
+        >
+            <div className="grid md:grid-cols-4 gap-8">
+                <div className="col-span-1">
+                    <p className="text-brand-gray text-sm">
+                        ({num}) {title}
+                    </p>
+                </div>
+                <div className="md:col-span-3">{children}</div>
+            </div>
+        </motion.section>
+    );
+};
+
+// --- 프로그램 카드 ---
+const ProgramCard = ({ imgSrc, title, description }: { imgSrc: string; title: string; description: string }) => (
+    <div className="group">
+        <div className="overflow-hidden mb-4 bg-gray-200">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+                src={imgSrc}
+                alt={title}
+                width={800}
+                height={600}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <h3 className="text-xl font-bold text-brand-dark">{title}</h3>
+        <p className="text-brand-gray">{description}</p>
     </div>
-  );
+);
+
+export default function HomePage() {
+    return (
+        <div className="font-sans">
+            {/* --- Header --- */}
+            <header className="fixed top-0 left-0 right-0 z-50">
+                <div className="container mx-auto px-6 py-6 flex justify-between items-center">
+                    <Image src="/logo-black.png" alt="COMMA Logo" width={120} height={40} />
+                    <a
+                        href="#join"
+                        className="bg-brand-dark text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-black/80 transition-colors"
+                    >
+                        Join Us
+                    </a>
+                </div>
+            </header>
+
+            <main>
+                {/* --- Hero Section --- */}
+                <section className="h-screen min-h-[600px] flex items-center">
+                    <div className="container mx-auto px-6">
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="text-6xl md:text-8xl font-black tracking-tighter leading-none"
+                        >
+                            REST, AND <br />
+                            OPPORTUNITY FOR <br />
+                            <span className="text-sky-500">CHANGE.</span>
+                        </motion.h1>
+                    </div>
+                </section>
+
+                {/* --- About Section --- */}
+                <TitledSection num="01" title="ABOUT">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-6 text-brand-dark leading-snug">
+                        쉼, 그 이상의 가치를 제공하는 <br /> 2030 청년 플랫폼, 콤마
+                    </h2>
+                    <p className="max-w-2xl text-brand-gray leading-relaxed">
+                        불확실한 사회 속에서 자기만의 정체성을 추구하는 2030세대를 위해 존재합니다. COMMA는 단순히 쉬는
+                        것을 넘어, 감정·신체·정체성까지 온전히 충전하는{' '}
+                        <strong className="text-brand-dark">회복의 시간</strong>과 자기답게 살아가되 끊임없이 배우고
+                        연결하며 변화에 유연하게 대응하는 <strong className="text-brand-dark">성장의 기회</strong>를
+                        제공합니다.
+                    </p>
+                </TitledSection>
+
+                {/* --- Programs Section --- */}
+                <TitledSection num="02" title="PROGRAMS">
+                    <div className="grid md:grid-cols-2 gap-10">
+                        <ProgramCard
+                            imgSrc="/culture1.jpg"
+                            title="Culture"
+                            description="전시, 연극, 콘서트 등 문화 경험"
+                        />
+                        <ProgramCard
+                            imgSrc="/community1.jpg"
+                            title="Community"
+                            description="플로깅, 독서모임 등 함께하는 활동"
+                        />
+                        <ProgramCard
+                            imgSrc="/class1.jpg"
+                            title="Class"
+                            description="원데이 클래스를 통한 새로운 배움"
+                        />
+                        <ProgramCard
+                            imgSrc="/consultation1.jpg"
+                            title="Consultation"
+                            description="성향, 진로, 금융 등 전문 상담"
+                        />
+                    </div>
+                </TitledSection>
+
+                {/* --- Deep Dive Section --- */}
+                <TitledSection num="03" title="DEEP DIVE">
+                    <div className="bg-gray-100 p-8 md:p-12 text-center">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-brand-dark">
+                            나를 발견하는 특별한 여정
+                        </h2>
+                        {/* [수정됨] '성경따기' -> ‘성경따기’ */}
+                        <p className="text-sky-500 font-semibold mb-6">‘성경따기’ 자기계발 프로그램</p>
+                        <p className="max-w-2xl mx-auto text-brand-gray leading-relaxed">
+                            {/* [수정됨] '성경따기' -> ‘성경따기’ */}
+                            COMMA의 ‘성경따기’는 종교 활동이 아닌, 바이블의 지혜를 통해 자존감, 리더십 등을 개선하는
+                            자기계발 프로그램입니다. 현재 더 나은 코칭 프로그램 개발을 위한 연구 프로젝트의 베타
+                            테스트로 운영되고 있습니다.
+                        </p>
+                    </div>
+                </TitledSection>
+
+                {/* --- Reviews Section --- */}
+                <TitledSection num="04" title="REVIEWS">
+                    <div className="space-y-10">
+                        <div className="border-l-4 border-sky-400 pl-6">
+                            {/* [수정됨] "..." -> “...” */}
+                            <p className="text-xl md:text-2xl font-medium text-brand-dark">
+                                “정신없이 살다가 처음으로 제대로 된 쉼을 경험했어요. 저를 돌아보는 소중한
+                                시간이었습니다.”
+                            </p>
+                            <p className="mt-3 text-brand-gray">- 김O은, [커뮤니티] 참여자</p>
+                        </div>
+                        <div className="border-l-4 border-sky-400 pl-6">
+                            {/* [수정됨] "..." -> “...” */}
+                            <p className="text-xl md:text-2xl font-medium text-brand-dark">
+                                “진로상담을 통해 막막했던 미래에 대한 실마리를 찾았어요. 제 안의 가능성을 보게
+                                해주셨습니다.”
+                            </p>
+                            <p className="mt-3 text-brand-gray">- 이O진, [컨설테이션] 참여자</p>
+                        </div>
+                    </div>
+                </TitledSection>
+
+                {/* --- Footer CTA --- */}
+                <section id="join" className="bg-brand-dark text-off-white py-20 md:py-32">
+                    <div className="container mx-auto px-6 text-center">
+                        <p className="text-sm text-brand-gray mb-4">(05) JOIN US</p>
+                        <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-8">
+                            Join The <br />
+                            Comma Community
+                        </h2>
+                        <p className="text-brand-gray mb-10 max-w-lg mx-auto">
+                            지금 바로 콤마의 소식을 확인하고, 다양한 프로그램에 참여해보세요.
+                        </p>
+                        <div className="flex justify-center items-center space-x-6 mb-12">
+                            <a
+                                href="https://www.instagram.com/c2030comma"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-gray-400 hover:text-white transition-colors"
+                            >
+                                <Instagram size={28} />
+                            </a>
+                            <a
+                                href="https://www.youtube.com/@comma_music-i8m"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-gray-400 hover:text-white transition-colors"
+                            >
+                                <Youtube size={28} />
+                            </a>
+                        </div>
+                        <a
+                            href="#"
+                            className="bg-sky-500 text-white font-bold px-8 py-3 rounded-full hover:bg-sky-600 transition-colors inline-flex items-center text-base"
+                        >
+                            최신 소식 확인하기 <ArrowRight className="ml-2 w-5 h-5" />
+                        </a>
+                    </div>
+                </section>
+                <footer className="bg-brand-dark text-brand-gray text-sm py-6">
+                    <div className="container mx-auto px-6 text-center">
+                        © {new Date().getFullYear()} COMMA. All rights reserved.
+                    </div>
+                </footer>
+            </main>
+        </div>
+    );
 }
