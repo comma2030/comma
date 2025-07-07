@@ -50,18 +50,6 @@ const ProgramCard = ({ imgSrc, title, description }: { imgSrc: string; title: st
 export default function HomePage() {
     return (
         <div className="font-sans">
-            <header className="fixed top-0 left-0 right-0 z-50">
-                <div className="container mx-auto px-6 py-6 flex justify-between items-center">
-                    <Image src="/logo.png" alt="COMMA Logo" width={120} height={40} />
-                    <a
-                        href="#join"
-                        className="bg-brand-dark text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-black/80 transition-colors"
-                    >
-                        Join Us
-                    </a>
-                </div>
-            </header>
-
             <main>
                 {/* --- Hero Section --- */}
                 <section className="h-screen min-h-[600px] flex items-center">
@@ -156,7 +144,6 @@ export default function HomePage() {
                     </div>
                 </TitledSection>
 
-                {/* --- Footer CTA --- */}
                 <section id="join" className="bg-brand-dark text-off-white py-20 md:py-32">
                     <div className="container mx-auto px-6 text-center">
                         <p className="text-sm text-brand-gray mb-4">(05) JOIN US</p>
@@ -193,11 +180,6 @@ export default function HomePage() {
                         </a>
                     </div>
                 </section>
-                <footer className="bg-brand-dark text-brand-gray text-sm py-6">
-                    <div className="container mx-auto px-6 text-center">
-                        © {new Date().getFullYear()} COMMA. All rights reserved.
-                    </div>
-                </footer>
             </main>
         </div>
     );
