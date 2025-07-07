@@ -127,8 +127,9 @@ export default function HomePage() {
                         </h2>
                         <p className="text-sky-500 font-semibold mb-6">무제 자기계발 프로그램</p>
                         <p className="max-w-2xl mx-auto text-brand-gray leading-relaxed">
-                            COMMA의 '무제'는 고전의 내용을 통해 자존감, 리더십 등을 개선하는 자기계발 프로그램입니다.
-                            현재 더 나은 코칭 프로그램 개발을 위한 연구 프로젝트의 베타 테스트로 운영되고 있습니다.
+                            {
+                                "COMMA의 '무제'는 고전의 내용을 통해 자존감, 리더십 등을 개선하는 자기계발 프로그램입니다."
+                            }
                         </p>
                     </div>
                 </TitledSection>
